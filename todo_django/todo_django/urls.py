@@ -15,14 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework.authtoken.views import obtain_auth_token
 
 from rest_framework import routers
-from todo.views import ToDoItemViewSet
+from todo.views import ToDoItemViewSet, register
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register("todos", ToDoItemViewSet)
+router.register('todos', ToDoItemViewSet, base_name="todo")
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^api-auth-token/', obtain_auth_token),
     url(r'^api/', include(router.urls)),
+    url(r'^admin/', admin.site.urls),
+    url(r'^api-register/', register),
 ]
